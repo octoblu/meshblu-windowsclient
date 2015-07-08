@@ -159,7 +159,7 @@ namespace Octoblu
         /// <param name="dev">JSON object that represent custom properties you want on the device</param>
         /// <param name="owneruuid">Uuid of the Octoblu account owner to register device under</param>
         /// <param name="type">device type designation on Octoblu</param>
-        public void RegisterPluginDevice(string name, JObject dev, string owneruuid, string type)
+        public void RegisterPluginDevice(string name, string devJson, string owneruuid, string type)
         {
             ManualResetEvent syncEvent = new ManualResetEvent(false);
             try
@@ -170,6 +170,10 @@ namespace Octoblu
                 SetupMeshbluConnection();
 
                 // Add the rest of the properties to Octoblu device
+                if (name == null || devJson == null || owneruuid == null || type == null)
+                    throw new ArgumentException("Null argument specified");
+
+                var dev = JObject.Parse(devJson);
                 dev["name"] = name;
                 dev["type"] = "device:" + type;
 
@@ -213,8 +217,8 @@ namespace Octoblu
         /// Blocking call....
         /// </summary>
         public void Connect(
-            JObject messageSchema = null, 
-            JObject optionsSchema = null
+            string messageSchemaJson = null,
+            string optionsSchemaJson = null
             )
         {
             try
@@ -259,6 +263,12 @@ namespace Octoblu
                     _socket.On("ready", (jsondata) =>
                     {
                         // This device is now ready to receive messages
+                        JObject messageSchema = null;
+                        JObject optionsSchema = null;
+                        if (messageSchemaJson != null)
+                            messageSchema = JObject.Parse(messageSchemaJson);
+                        if (optionsSchemaJson != null)
+                            optionsSchema = JObject.Parse(optionsSchemaJson);
                         UpdateDevice(messageSchema, optionsSchema);
                         OnReady(jsondata);
                     });
@@ -305,13 +315,13 @@ namespace Octoblu
         /// </summary>
         /// <param name="devicesToSendTo">Array of device UUIDs</param>
         /// <param name="data">JSON data</param>
-        public void SendMessage(JArray devicesToSendTo, JObject data)
+        public void SendMessage(string devicesToSendToJson, string dataJson)
         {
             try
             {
                 var msg = new JObject();
-                msg["devices"] = devicesToSendTo;
-                msg["payload"] = data;
+                msg["devices"] = JObject.Parse(devicesToSendToJson);
+                msg["payload"] = JObject.Parse(dataJson);
                 _socket.Emit(
                     "message",
                     new AckImpl((sendResp) =>

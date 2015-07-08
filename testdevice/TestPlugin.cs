@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Newtonsoft.Json.Linq;
 
 namespace Octoblu
 {
@@ -21,9 +20,9 @@ namespace Octoblu
         {
             Console.WriteLine("TestPlugin: Octoblu returned Error message: " + error);
         }
-        public void OnConfig(JObject newConfig)
+        public void OnConfig(string jsonConfig)
         {
-            Console.WriteLine("TestPlugin: Octoblu set new device configuration " + newConfig.ToString());
+            Console.WriteLine("TestPlugin: Octoblu set new device configuration " + jsonConfig);
         }
     }
 }

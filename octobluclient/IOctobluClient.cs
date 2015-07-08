@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Newtonsoft.Json.Linq;
 
 namespace Octoblu
 {
@@ -23,18 +22,18 @@ namespace Octoblu
         /// Regsiter a new device with Octoblu on behalf of the plugin.
         /// </summary>
         /// <param name="name">Name to be given to the device</param>
-        /// <param name="dev">other custom properties for the Octoblu device</param>
+        /// <param name="dev">other custom properties for the Octoblu device, in JSON string</param>
         /// <param name="owneruuid">UUID of the Octoblu owner account for the device</param>
         /// <param name="type">type of device (free string, could be anything)</param>
-        void RegisterPluginDevice(string name, JObject dev, string owneruuid, string type);
+        void RegisterPluginDevice(string name, string devJson, string owneruuid, string type);
 
         /// <summary>
         /// Connect to Octoblu and listen for messages, on behalf of our device
         /// Blocking call....
         /// </summary>
         void Connect(
-            JObject messageSchema = null,
-            JObject optionsSchema = null
+            string messageSchemaJson = null,
+            string optionsSchemaJson = null
             );
         
         /// <summary>
@@ -47,6 +46,6 @@ namespace Octoblu
         /// </summary>
         /// <param name="devicesToSendTo">An array of device UUIDs to send the message to ('*' for broadcast)</param>
         /// <param name="data">JSON object that contains the payload to send to the device(s)</param>
-        void SendMessage(JArray devicesToSendTo, JObject data);
+        void SendMessage(string devicesToSendToJson, string dataJson);
     }
 }

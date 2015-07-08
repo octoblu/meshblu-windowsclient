@@ -28,7 +28,7 @@ namespace Octoblu
                     dev["username"] = System.Environment.UserName;
                     dev["computername"] = System.Environment.MachineName;
 
-                    octoblu.RegisterPluginDevice(name, dev, uuid, "testdevice");
+                    octoblu.RegisterPluginDevice(name, dev.ToString(), uuid, "testdevice");
                 }
             }
             // THIS IS A BLOCKING CALL

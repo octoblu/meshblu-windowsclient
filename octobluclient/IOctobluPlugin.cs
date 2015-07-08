@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 namespace Octoblu
 {
@@ -35,8 +33,8 @@ namespace Octoblu
         /// This also includes the additional options as set by the user, according to the
         /// optionsSchema
         /// </summary>
-        /// <param name="newConfig"></param>
-        void OnConfig(JObject newConfig);
+        /// <param name="newConfig">new configuration that Octoblu sends down in JSON string form</param>
+        void OnConfig(string newConfig);
 
     }
 }
