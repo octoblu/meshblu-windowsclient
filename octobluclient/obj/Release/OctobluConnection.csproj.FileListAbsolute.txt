@@ -1,0 +1,14 @@
+C:\devtrees\Prototypes\IoT\red_synergy_2015\sprint5\OctobluVDAAgent\Agent\bin\Release\OctobluConnection.dll.config
+C:\devtrees\Prototypes\IoT\red_synergy_2015\sprint5\OctobluVDAAgent\Agent\bin\Release\OctobluConnection.dll
+C:\devtrees\Prototypes\IoT\red_synergy_2015\sprint5\OctobluVDAAgent\Agent\bin\Release\OctobluConnection.pdb
+C:\devtrees\Prototypes\IoT\red_synergy_2015\sprint5\OctobluVDAAgent\Agent\bin\Release\EngineIoClientDotNet.dll
+C:\devtrees\Prototypes\IoT\red_synergy_2015\sprint5\OctobluVDAAgent\Agent\bin\Release\Newtonsoft.Json.dll
+C:\devtrees\Prototypes\IoT\red_synergy_2015\sprint5\OctobluVDAAgent\Agent\bin\Release\SocketIoClientDotNet.dll
+C:\devtrees\Prototypes\IoT\red_synergy_2015\sprint5\OctobluVDAAgent\Agent\bin\Release\WebSocket4Net.dll
+C:\devtrees\Prototypes\IoT\red_synergy_2015\sprint5\OctobluVDAAgent\Agent\bin\Release\Newtonsoft.Json.xml
+C:\devtrees\Prototypes\IoT\red_synergy_2015\sprint5\OctobluVDAAgent\Agent\obj\Release\Octoblu.Properties.Resources.resources
+C:\devtrees\Prototypes\IoT\red_synergy_2015\sprint5\OctobluVDAAgent\Agent\obj\Release\OctobluConnection.csproj.GenerateResource.Cache
+C:\devtrees\Prototypes\IoT\red_synergy_2015\sprint5\OctobluVDAAgent\Agent\obj\Release\OctobluConnection.dll
+C:\devtrees\Prototypes\IoT\red_synergy_2015\sprint5\OctobluVDAAgent\Agent\obj\Release\OctobluConnection.pdb
+C:\devtrees\Prototypes\IoT\red_synergy_2015\sprint5\OctobluVDAAgent\Agent\bin\Release\log4net.dll
+C:\devtrees\Prototypes\IoT\red_synergy_2015\sprint5\OctobluVDAAgent\Agent\bin\Release\log4net.xml
