@@ -7,7 +7,6 @@ namespace Octoblu
 {
     public interface IOctobluClient
     {
-
         /// <summary>
         /// Initializes the plugin and sets it configuration store and message interface.
         /// Returns 
@@ -25,7 +24,7 @@ namespace Octoblu
         /// <param name="dev">other custom properties for the Octoblu device, in JSON string</param>
         /// <param name="owneruuid">UUID of the Octoblu owner account for the device</param>
         /// <param name="type">type of device (free string, could be anything)</param>
-        void RegisterPluginDevice(string name, string devJson, string owneruuid, string type);
+        void RegisterDevice(string name, string devJson, string owneruuid, string type);
 
         /// <summary>
         /// Connect to Octoblu and listen for messages, on behalf of our device
@@ -46,6 +45,19 @@ namespace Octoblu
         /// </summary>
         /// <param name="devicesToSendTo">An array of device UUIDs to send the message to ('*' for broadcast)</param>
         /// <param name="data">JSON object that contains the payload to send to the device(s)</param>
-        void SendMessage(string devicesToSendToJson, string dataJson);
+        /// <param name="callback">(optional) callback function to receive the send response</param>
+        void Message(string devicesToSendToJson, string dataJson, Action<string> callback);
+
+        /// <summary>
+        /// Stores sensor data for a particular device UUID. 
+        /// Data needs to be of the form
+        ///     uuid: "uuid of the device"
+        ///     "key1": "data1"
+        ///     "key2": "data2"
+        ///     ...
+        /// </summary>
+        /// <param name="dataJson"></param>
+        /// <param name="callback"></param>
+        void Data(string dataJson, Action<string> callback);
     }
 }

@@ -48,3 +48,7 @@ bin/
 Network Trash Folder
 Temporary Items
 .apdisk
+*.suo
+octobluclient/obj/Debug/OctobluClient.csproj.FileListAbsolute.txt
+octobluclient/obj/Debug/OctobluConnection.dll
+*.pdb

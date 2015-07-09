@@ -66,8 +66,7 @@ namespace Octoblu
         /// <param name="newConfig"></param>
         void OnConfig(object newConfig)
         {
-            dynamic settings = JObject.Parse(newConfig.ToString());
-            _plugin.OnConfig(settings);
+            _plugin.OnConfig(newConfig.ToString());
         }
         /// <summary>
         /// The device is ready to receive messages from Octoblu
@@ -76,7 +75,7 @@ namespace Octoblu
         void OnReady(object jsondata)
         {
             var data = JsonConvert.DeserializeObject<ReadyResponse>(jsondata.ToString());
-            Trace.WriteLine("OctobluConnection: Device ready: " + data.status);
+            Trace.WriteLine("OctobluClient: Device ready: " + data.status);
             _plugin.OnReady();
         }
         /// <summary>
@@ -85,7 +84,7 @@ namespace Octoblu
         /// <param name="data">Plugin specific Message data</param>
         void OnMessage(object data)
         {
-            Trace.WriteLine("OctobluConnection: Message received: " + data.ToString());
+            Trace.WriteLine("OctobluClient: Message received: " + data.ToString());
             dynamic settings = JObject.Parse(data.ToString());
             // webhook sends in payload in 'params', trigger sends it in 'payload'
             if (settings["params"] != null || settings["payload"] != null)
@@ -159,7 +158,7 @@ namespace Octoblu
         /// <param name="dev">JSON object that represent custom properties you want on the device</param>
         /// <param name="owneruuid">Uuid of the Octoblu account owner to register device under</param>
         /// <param name="type">device type designation on Octoblu</param>
-        public void RegisterPluginDevice(string name, string devJson, string owneruuid, string type)
+        public void RegisterDevice(string name, string devJson, string owneruuid, string type)
         {
             ManualResetEvent syncEvent = new ManualResetEvent(false);
             try
@@ -181,16 +180,19 @@ namespace Octoblu
                 owners.Add(owneruuid);
                 dev["owner"] = owners;
 
+                var all = new JArray();
+                all.Add("*");
+
                 if(dev["configureWhitelist"] == null)
-                    dev["configureWhitelist"] = "*";// anybody can configure this device
+                    dev["configureWhitelist"] = owners; // only owners can configure this device
                 if(dev["discoverWhitelist"] == null)
                     dev["discoverWhitelist"] = owners; // only owners are can discover this device
                 if(dev["receiveWhitelist"] == null)
-                    dev["receiveWhitelist"] = "*";     // anyone can receive messages from this device
+                    dev["receiveWhitelist"] = all; // anyone can receive messages from this device
                 if(dev["sendWhitelist"] == null)
-                    dev["sendWhitelist"] = "*";        // anyone can send messages to this device
+                    dev["sendWhitelist"] = all; // anyone can send messages to this device
 
-                Trace.WriteLine("OctobluConnection: Registering device.... for owner:" + owneruuid);
+                Trace.WriteLine("OctobluClient: Registering device.... for owner:" + owneruuid);
                 _socket.Emit(
                     "register",
                     new AckImpl((newdevicedata) =>
@@ -208,7 +210,7 @@ namespace Octoblu
             catch (Exception e)
             {
                 syncEvent.Set();
-                Trace.WriteLine("OctobluConnection Exception Registering device : " + e.ToString());
+                Trace.WriteLine("OctobluClient Exception Registering device : " + e.ToString());
             }
             syncEvent.WaitOne();
         }
@@ -226,7 +228,7 @@ namespace Octoblu
                 if (!_config.Read())
                 {
                     {
-                        Trace.WriteLine("OctobluConnection: Device is not configured yet !");
+                        Trace.WriteLine("OctobluClient: Device is not configured yet !");
                         return;
                     }
                 }
@@ -241,8 +243,8 @@ namespace Octoblu
                     _socket.On("identify", (jsondata) =>
                     {
                         var data = JsonConvert.DeserializeObject<IdentifyResponse>(jsondata.ToString());
-                        Trace.WriteLine("OctobluConnection: Websocket connecting to Meshblu with socket id: " + data.socketid);
-                        Trace.WriteLine("OctobluConnection: Sending device uuid: " + _config.Uuid);
+                        Trace.WriteLine("OctobluClient: Websocket connecting to Meshblu with socket id: " + data.socketid);
+                        Trace.WriteLine("OctobluClient: Sending device uuid: " + _config.Uuid);
 
                         // Identify this device to Octoblu using the 
                         // device's uuid and token from the registry
@@ -257,7 +259,7 @@ namespace Octoblu
                     {
                         // Octoblu says this device is not ready and will not recieve messages
                         var data = JsonConvert.DeserializeObject<NotReadyResponse>(jsondata.ToString());
-                        Trace.WriteLine("OctobluConnection: Device not ready: " + data.status); // could be 401 (not authenticated)
+                        Trace.WriteLine("OctobluClient: Device not ready: " + data.status); // could be 401 (not authenticated)
                     });
                     
                     _socket.On("ready", (jsondata) =>
@@ -292,10 +294,15 @@ namespace Octoblu
                         OnMessage(jsonmessage);
                     });
                 });
+
+                _socket.On(Socket.EVENT_DISCONNECT, (data) =>
+                {
+                    Trace.WriteLine("EVENT_DISCONNECT");
+                });
             }
             catch (Exception e)
             {
-                Trace.WriteLine("OctobluConnection Exception: Connecting to Octoblu : " + e.ToString());
+                Trace.WriteLine("OctobluClient Exception: Connecting to Octoblu : " + e.ToString());
                 _endEvent.Set();
             }
             _endEvent.WaitOne();
@@ -305,8 +312,11 @@ namespace Octoblu
         /// </summary>
         public void Disconnect()
         {
+            Trace.WriteLine("OctobluClient: Disconnecting from Octoblu");
+
             // Disconnect from Octoblu and end this process
-            _socket.Disconnect();
+            //_socket.Disconnect();
+            _socket.Close();
             _socket = null;
             _endEvent.Set();
         }
@@ -315,7 +325,8 @@ namespace Octoblu
         /// </summary>
         /// <param name="devicesToSendTo">Array of device UUIDs</param>
         /// <param name="data">JSON data</param>
-        public void SendMessage(string devicesToSendToJson, string dataJson)
+        /// <param name="callback">Callback function for send message response</param>
+        public void Message(string devicesToSendToJson, string dataJson, Action<string> callback = null)
         {
             try
             {
@@ -327,11 +338,39 @@ namespace Octoblu
                     new AckImpl((sendResp) =>
                     {
                         Trace.WriteLine("SendMessage response received: " + sendResp.ToString());
+                        if (callback != null)
+                            callback(sendResp.ToString());
                     }),
                     msg);
             }catch(Exception e)
             {
-                Trace.WriteLine("OctobluConnection Exception: " + e.ToString());
+                Trace.WriteLine("OctobluClient Message Exception: " + e.ToString());
+            }
+        }
+        /// <summary>
+        /// Send sensor data for a device. You could send any JSON message
+        /// </summary>
+        public void Data(string dataJson, Action<string> callback = null)
+        {
+            try
+            {
+                if (dataJson == null)
+                    throw new ArgumentNullException("dataJson");
+
+                var msg = JObject.Parse(dataJson);
+                _socket.Emit(
+                    "data",
+                    new AckImpl((sendResp) =>
+                    {
+                        Trace.WriteLine("SendMessage response received: " + sendResp.ToString());
+                        if (callback != null)
+                            callback(sendResp.ToString());
+                    }),
+                    msg);
+            }
+            catch (Exception e)
+            {
+                Trace.WriteLine("OctobluClient Data Exception: " + e.ToString());
             }
         }
     }
