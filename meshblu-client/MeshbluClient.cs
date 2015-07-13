@@ -16,8 +16,8 @@ namespace Octoblu
     public class OctobluClientFactory
     {
         //Singleton of this octoblu connection
-        private static OctobluClient _octobluDevInstance = new OctobluClient();
-        public static IOctobluClient GetInstance()
+        private static MeshbluClient _octobluDevInstance = new MeshbluClient();
+        public static IMeshbluClient GetInstance()
         {
             return _octobluDevInstance;
         }
@@ -27,14 +27,14 @@ namespace Octoblu
     /// This class encapsulates all functionality necessary to setup a connection with
     /// Octoblu, send and receive messages from it.
     /// </summary>
-    public class OctobluClient : IOctobluClient
+    public class MeshbluClient : IMeshbluClient
     {
         private ManualResetEvent _endEvent = new ManualResetEvent(false);
         private Quobject.SocketIoClientDotNet.Client.Socket _socket = null;
-        private IOctobluPlugin _plugin = null;
-        private IOctobluConfig _config = null;
+        private IMeshbluPlugin _plugin = null;
+        private IMeshbluConfig _config = null;
         
-        public OctobluClient()
+        public MeshbluClient()
         {
         }
 
@@ -146,7 +146,8 @@ namespace Octoblu
         /// <param name="config">Configuration for the plugin's deviec (device uuid and token)</param>
         /// <param name="plugin">Plugin interface to recieve events on</param>
         /// <returns></returns>
-        public bool InitializePlugin(IOctobluConfig config, IOctobluPlugin plugin){
+        public bool InitializePlugin(IMeshbluConfig config, IMeshbluPlugin plugin)
+        {
             _config = config;
             _plugin = plugin;
             return _config.Read();
@@ -348,7 +349,7 @@ namespace Octoblu
             }
         }
         /// <summary>
-        /// Send sensor data for a device. You could send any JSON message
+        /// Send sensor data for a device. JSON needs to be in key:value pairs.
         /// </summary>
         public void Data(string dataJson, Action<string> callback = null)
         {

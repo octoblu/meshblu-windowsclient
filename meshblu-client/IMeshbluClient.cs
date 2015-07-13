@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Octoblu
 {
-    public interface IOctobluClient
+    public interface IMeshbluClient
     {
         /// <summary>
         /// Initializes the plugin and sets it configuration store and message interface.
@@ -15,7 +15,7 @@ namespace Octoblu
         /// </summary>
         /// <param name="config">configuration store for the plugin's device (its uuid and token)</param>
         /// <param name="plugin">regsitered callbacks for the plugin</param>
-        bool InitializePlugin(IOctobluConfig config, IOctobluPlugin plugin);
+        bool InitializePlugin(IMeshbluConfig config, IMeshbluPlugin plugin);
         
         /// <summary>
         /// Regsiter a new device with Octoblu on behalf of the plugin.
@@ -28,7 +28,7 @@ namespace Octoblu
 
         /// <summary>
         /// Connect to Octoblu and listen for messages, on behalf of our device
-        /// Blocking call....
+        /// BLOCKING CALL....
         /// </summary>
         void Connect(
             string messageSchemaJson = null,

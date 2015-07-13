@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Octoblu
 {
-    class TestPlugin : IOctobluPlugin
+    class TestPlugin : IMeshbluPlugin
     {
         public void OnReady()
         {

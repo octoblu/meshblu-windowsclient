@@ -7,7 +7,7 @@ using System.Diagnostics;
 
 namespace Octoblu
 {
-    public interface IOctobluConfig
+    public interface IMeshbluConfig
     {
         // Public properties
         string Uuid { get; }
@@ -30,7 +30,7 @@ namespace Octoblu
         void Write(string uuid, string token);
     }
 
-    public enum OctobluConfigLocation
+    public enum MeshbluConfigLocation
     {
         Machine,
         User
@@ -40,7 +40,7 @@ namespace Octoblu
     ///  necessary to setup a connection to Octoblu. This is a default implementation
     ///  that uses the registry to store the configuration, each plugin can create its own.
     /// </summary>
-    public class OctobluConfig : IOctobluConfig
+    public class MeshbluConfig : IMeshbluConfig
     {
         private RegistryKey _hive = Registry.CurrentUser;
         private const string _baseKeyPath = "Software\\Citrix\\OctobluAgent";
@@ -57,9 +57,9 @@ namespace Octoblu
         public int    MeshbluPort { get { return _meshbluPort; } }
         public string PluginName { get { return _pluginName; } }
 
-        public OctobluConfig(string pluginName, OctobluConfigLocation loc = OctobluConfigLocation.User)
+        public MeshbluConfig(string pluginName, MeshbluConfigLocation loc = MeshbluConfigLocation.User)
         {
-            if (loc == OctobluConfigLocation.Machine)
+            if (loc == MeshbluConfigLocation.Machine)
                 _hive = Registry.LocalMachine;
             _pluginName = pluginName;
         }

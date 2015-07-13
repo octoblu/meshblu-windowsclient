@@ -55,9 +55,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\octobluclient\OctobluClient.csproj">
+    <ProjectReference Include="..\meshblu-client\MeshbluClient.csproj">
       <Project>{64f2aefb-7b00-4c1b-95b0-cf3be4bfb6f9}</Project>
-      <Name>OctobluClient</Name>
+      <Name>MeshbluClient</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

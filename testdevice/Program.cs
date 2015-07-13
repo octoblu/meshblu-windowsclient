@@ -12,7 +12,7 @@ namespace Octoblu
         static void Run()
         {
             var plugin = new TestPlugin();
-            var config = new OctobluConfig("TestDevice");
+            var config = new MeshbluConfig("TestDevice");
             var octoblu = OctobluClientFactory.GetInstance();
             if (!octoblu.InitializePlugin(config, plugin))
             {

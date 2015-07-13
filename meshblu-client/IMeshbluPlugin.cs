@@ -8,7 +8,7 @@ namespace Octoblu
     /// <summary>
     /// Plugins are expected to implement this interface.
     /// </summary>
-    public interface IOctobluPlugin
+    public interface IMeshbluPlugin
     {
         /// <summary>
         /// Notification from Octoblu that the device is identified, connected and ready
@@ -35,6 +35,5 @@ namespace Octoblu
         /// </summary>
         /// <param name="newConfig">new configuration that Octoblu sends down in JSON string form</param>
         void OnConfig(string newConfig);
-
     }
 }

@@ -5,7 +5,7 @@ VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestDevice", "TestDevice\TestDevice.csproj", "{0E9F3793-1B3C-4183-BC3F-731C55B9C669}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OctobluClient", "octobluclient\OctobluClient.csproj", "{64F2AEFB-7B00-4C1B-95B0-CF3BE4BFB6F9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MeshbluClient", "meshblu-client\MeshbluClient.csproj", "{64F2AEFB-7B00-4C1B-95B0-CF3BE4BFB6F9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

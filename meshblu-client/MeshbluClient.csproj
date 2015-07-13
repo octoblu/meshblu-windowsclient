@@ -8,7 +8,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Octoblu</RootNamespace>
-    <AssemblyName>OctobluClient</AssemblyName>
+    <AssemblyName>MeshbluClient</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -70,12 +70,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataOnWire.cs" />
-    <Compile Include="IOctobluClient.cs" />
-    <Compile Include="IOctobluPlugin.cs" />
-    <Compile Include="OctobluConfig.cs" />
+    <Compile Include="MeshbluResponse.cs" />
+    <Compile Include="IMeshbluClient.cs" />
+    <Compile Include="IMeshbluPlugin.cs" />
+    <Compile Include="MeshbluConfig.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="OctobluClient.cs" />
+    <Compile Include="MeshbluClient.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
