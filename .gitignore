@@ -18,11 +18,12 @@ $RECYCLE.BIN/
 *.lnk
 
 # Windows binaries
-obj/
-bin/
-*.dll
-*.pdb
-*.exe
+*.suo
+*.user
+_ReSharper.*
+bin
+obj
+packages
 
 # =========================
 # Operating System Files
