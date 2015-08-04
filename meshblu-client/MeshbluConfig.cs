@@ -84,7 +84,7 @@ namespace Octoblu
             }
             if (!deviceConfigured)
             {
-                Trace.WriteLine("OctobluConfig: The Octoblu VDA agent has not been registered for this user.");
+                Trace.WriteLine("OctobluConfig: The Octoblu node has not been registered for this user.");
                 return false;
             }
             return true;
